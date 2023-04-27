@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/CustomAnimation</item>
+    </style>
+    <style name="ActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorAccent</item>
+
+    </style>
+
+    <style name="CustomAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in</item>
+    </style>
+
+</resources>
