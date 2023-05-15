@@ -11,7 +11,10 @@ import org.asl.mylibrary.models.Book;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+//This is a utility class that provides some common functionality to manage a list of books
 public class Utils {
+
+    // Constants for keys in SharedPreferences
     public static final String BOOK_ID_KEY = "bookId";
     private  static final String ALL_BOOKS_KEY = "all_books";
     private  static final String ALREADY_READ_BOOKS = "already_read_books";
@@ -20,25 +23,33 @@ public class Utils {
     private  static final String FAVORITE_BOOKS = "favorite_books";
 
 
+    // Singleton instance of Utils
+    private static Utils instance;  
 
-    private static Utils instance;
-    private SharedPreferences sharedPreferences;
+    // SharedPreferences for storing book data
+    private SharedPreferences sharedPreferences;     
 
-
+    //Private constructor for creating a new instance of Utils
     private Utils(Context context) {
 
         sharedPreferences = context.getSharedPreferences("alternate_db",Context.MODE_PRIVATE);
-        if(null == getAllBooks()){
-            initdata();
+        if(null == getAllBooks()){  //Check if the list of books is empty
+            initdata(); //If empty, initialize the book data
         }
 
+       //Instantiate SharedPreferences Editor object to modify the SharedPreferences data
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
 
+        //Instantiate Gson object to convert between JSON and Java object
+        Gson gson = new Gson(); 
 
+        //Check if the list currently is empty
         if(null ==  getAlreadyReadBooks()){
+
+            //If empty, add an empty ArrayList<Book> to SharedPreferences and save as a JSON string
             editor.putString(ALREADY_READ_BOOKS,gson.toJson(new ArrayList<Book>()));
-            editor.commit();
+
+            editor.commit(); //Commit changes to SharedPreferences
         }
 
         if(null == getWantToReadBooks()){
@@ -56,10 +67,13 @@ public class Utils {
 
     }
 
+    //Private method to initialize book data
     private void initdata() {
 
+        //Instantiate ArrayList<Book> object to store book data
         ArrayList<Book> books = new ArrayList<>();
 
+        //Add some sample books to the ArrayList
         books.add(new Book(1,"The Philosopher’s Stone","J.K Rowling",221,"https://images.moviesanywhere.com/143cdb987186a1c8f94d4f18de211216/fdea56fa-2703-47c1-8da8-70fc5382e1ea.jpg",
                 "The first book of the mega Harry Potter series","        As this is the first book of the series, the story unravels in the first few chapters. The story of the Harry Potter and the Philosopher’s Stone PDF revolves around an 11-year old boy named Harry Potter who lives with his maternal aunt, uncle and age-fellow cousin. Harry was orphaned when he was just 1 year old and brought home to his Aunt. Always treated as a servant throughout his childhood years, life changes for Harry when on his eleventh birthday he receives an acceptance and welcome letter by the Hogwarts School of Witchcraft and Wizardry. This is the when he finds out he is a wizard and also understands why he never fit into the muggle world.\n" +
         "\n" +
@@ -102,7 +116,7 @@ public class Utils {
         editor.commit();
     }
 
-
+  // Method for getting the singleton instance of Utils
     public static Utils getInstance( Context context) {
         if (null != instance) {
             return instance;
@@ -112,7 +126,7 @@ public class Utils {
         }
     }
 
-
+    // Method for getting all books
     public  ArrayList<Book> getAllBooks() {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Book>>(){}.getType();
@@ -120,6 +134,7 @@ public class Utils {
         return books;
             }
 
+    // Method for getting books that have already been read
     public  ArrayList<Book> getAlreadyReadBooks() {
 
                 Gson gson = new Gson();
@@ -128,6 +143,7 @@ public class Utils {
                 return books;
             }
 
+            // Method for getting books that are on the "want to read" list
             public  ArrayList<Book> getWantToReadBooks() {
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Book>>(){}.getType();
@@ -135,12 +151,14 @@ public class Utils {
                 return books;
             }
 
+            // Method for getting books that are currently being read
             public  ArrayList<Book> getCurrentlyReadingBooks() {
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Book>>(){}.getType();
                 ArrayList<Book> books = gson.fromJson(sharedPreferences.getString(CURRENTLY_READING_BOOKS , null) , type);
                 return books;    }
 
+            // Method for getting favorite books
             public  ArrayList<Book> getFavoriteBooks() {
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Book>>(){}.getType();
@@ -148,6 +166,7 @@ public class Utils {
                 return books;
     }
 
+            // Method for getting a book by its ID
             public Book getBookById (int id ){
                 ArrayList<Book> books = getAllBooks();
                 if(null != books){
@@ -161,6 +180,7 @@ public class Utils {
         return null;
     }
 
+    // Method for adding a book to the already read list
     public boolean addToAlreadyRead(Book book){
         ArrayList<Book> books = getAlreadyReadBooks();
         if(null!= books){
@@ -176,6 +196,7 @@ public class Utils {
         return false;
     }
 
+    // Method for adding a book to the "want to read" list
     public boolean addToWantToRead(Book book){
 
         ArrayList<Book> books = getWantToReadBooks();
@@ -191,6 +212,7 @@ public class Utils {
         }
         return false;    }
 
+    // Method for adding a book to the "Currently reading books" list
     public boolean addToCurrentlyReading(Book book){
 
         ArrayList<Book> books = getCurrentlyReadingBooks();
@@ -206,6 +228,7 @@ public class Utils {
         }
         return false;    }
 
+    // Method for adding a book to the "Favorite Books" list
     public boolean addToFavourite(Book book){
 
         ArrayList<Book> books = getFavoriteBooks();
@@ -221,6 +244,7 @@ public class Utils {
         }
         return false;    }
 
+    // Method for removing a book from the "already read" list
     public boolean removeFromAlreadyRead(Book book){
         ArrayList<Book> books = getAlreadyReadBooks();
         if(null!= books){
@@ -240,6 +264,7 @@ public class Utils {
         return false;
     }
 
+    // Method for removing a book from the "want to read" list
     public boolean removeFromWantToRead(Book book){
 
         ArrayList<Book> books = getWantToReadBooks();
@@ -260,6 +285,7 @@ public class Utils {
         return false;
     }
 
+    // Method for removing a book from the "Favorites" list
     public boolean removeFromFavorites(Book book){
 
         ArrayList<Book> books = getFavoriteBooks();
@@ -280,6 +306,7 @@ public class Utils {
         return false;
     }
 
+    // Method for removing a book from the "currently reading" list
     public boolean removeFromCurrentlyReading(Book book){
 
         ArrayList<Book> books = getCurrentlyReadingBooks();
