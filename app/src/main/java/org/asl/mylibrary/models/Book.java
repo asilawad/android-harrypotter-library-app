@@ -11,6 +11,7 @@ public class Book {
     private String longDesc;
     private boolean isExpanded;
 
+    // Constructor to create a new Book object with the given parameters
     public Book(int id, String name, String author, int pages, String imageUrl, String shortDesc, String longDesc) {
         this.id = id;
         this.name = name;
@@ -22,6 +23,7 @@ public class Book {
         isExpanded = false;
     }
 
+    // Getter  and setter methods
 
     public boolean isExpanded() {
         return isExpanded;
@@ -87,6 +89,7 @@ public class Book {
         this.longDesc = longDesc;
     }
 
+    //string representation of the Book object
     @Override
     public String toString() {
         return "Book{" +
